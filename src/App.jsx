@@ -77,8 +77,11 @@ function App() {
   useEffect(() => {
     if (!shouldFetch) return;
 
-    fetchRecommendations();
-    dispatch({type: "FETCH_DONE"});
+    CONST runFetch = async () => {
+      await fetchRecommendations();
+      dispatch({type: "FETCH_DONE"});
+    }
+    runFetch();
   }, [shouldFetch, fetchRecommendations])
 
   
