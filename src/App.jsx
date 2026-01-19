@@ -21,11 +21,11 @@ function selectInput(state, action) {
       ...state, level: action.payload
     };
 
-    case "FETCH_RECOMMENDATION": 
-    return {
-      ...state, shouldFetch: true
-    };
     
+    case "FETCH_DONE": 
+    return {
+      ...state, shouldFetch: false
+    };
   }
 }
 
@@ -68,16 +68,17 @@ function App() {
     )
     const data = await response.json();
     console.log(data);
-    setAiResponses([...aiResponses, ...data.candidates]);
+    setAiResponses(prev => [...prev, ...data.candidates]);
   } catch(err){
     console.log(err)
   }
-  }, [genre, mood, level, aiResponses])
+  }, [genre, mood, level])
 
   useEffect(() => {
     if (!shouldFetch) return;
 
     fetchRecommendations();
+    dispatch({type: "FETCH_DONE"});
   }, [shouldFetch, fetchRecommendations])
 
   
